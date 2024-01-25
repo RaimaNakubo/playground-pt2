@@ -5,54 +5,34 @@ import (
 	"math"
 )
 
-// if statement basic syntax
-func sqrt(x float64) string {
-	if x < 0 {
-		return sqrt(-x) + "i"
+// Sqrt implements square root function
+func Sqrt(x float64) float64 {
+	z := x / 2
+	buffer := float64(0)
+	change := float64(1)
+
+	fmt.Println("Calculating square root of", x)
+	for i := 0; i < 10; i++ {
+		buffer = z
+		z -= (z*z - x) / (2 * z)
+		change = buffer - z
+		fmt.Println("Iteration", i, ":", z, "change:", change)
+
+		if change == 0 {
+			fmt.Printf("Calculation completed in %v iterations\n", i+1)
+			break
+		}
 	}
-	return fmt.Sprint(math.Sqrt(x))
+	return z
 }
 
-// starting if with a short statement declaration
-func pow(x, n, lim float64) float64 {
-	if v := math.Pow(x, n); v < lim {
-		return v
-	} else {
-		fmt.Printf("%g >= %g\n", v, lim)
-	}
-	return lim
-}
+/*
+the z² − x above is how far away z² is from where it needs to be (x), and the division by 2z is the derivative of z²,
+ to scale how much we adjust z by how quickly z² is changing. This general approach is called Newton's method.
+ It works well for many functions but especially well for square root
+*/
 
 func main() {
-
-	//for loop basic syntax
-	sum := 0
-	for i := 0; i < 10; i++ {
-		sum += i
-	}
-	fmt.Println("for loop")
-	fmt.Println(sum)
-
-	//the init and post statements are optional, like C's "while" loop
-	sum = 1
-	for sum < 1000 {
-		sum += sum
-	}
-	fmt.Println(sum)
-
-	/* Infinite loop
-	for {
-
-	}
-	*/
-
-	fmt.Println("if statement")
-	fmt.Println(sqrt(2), sqrt(-4))
-
-	fmt.Println("if with a short statement")
-	fmt.Println(
-		pow(3, 2, 10),
-		pow(3, 3, 20),
-	)
-
+	fmt.Println("re-created square root is  ", Sqrt(122))
+	fmt.Println("standard lib square root is", math.Sqrt(122))
 }
